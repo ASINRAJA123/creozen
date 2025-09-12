@@ -4,7 +4,7 @@ import Orb from '../components/Orb';
 
 // --- Page Content ---
 const companyName = "Creozen";
-const mainTagline = "Zen-crafted intelligence – delivering intelligent AI solutions with simplicity and precision.";
+const mainTagline = "Zen-crafted intelligence – delivering intelligent<br />AI solutions with simplicity and precision.";
 
 const serviceCards = [
   {
@@ -38,7 +38,6 @@ const serviceCards = [
   }
 ];
 
-
 const techStack = [ "Machine Learning", "Deep Learning", "Computer Vision", "DeepStream", "React", "Node.js", "Python", "NLP", "Generative AI" ];
 
 // --- Home Component ---
@@ -62,14 +61,24 @@ const Home = () => {
             {companyName}
           </motion.h1>
 
-          <motion.p
-            className="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-gray-300"
+          {/* Tagline (Mobile & Desktop Versions) */}
+          <motion.div
+            className="mt-4 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            {mainTagline}
-          </motion.p>
+            {/* Mobile Tagline */}
+            <p className="block md:hidden text-lg text-gray-300">
+              Zen-crafted intelligence
+            </p>
+
+            {/* Desktop Tagline */}
+            <p
+              className="hidden md:block text-lg md:text-xl text-gray-300"
+              dangerouslySetInnerHTML={{ __html: mainTagline }}
+            />
+          </motion.div>
 
           {/* Explore Products Button */}
           <motion.div
@@ -79,7 +88,7 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <a
-              href="/products " // 🔗 change to your products section route if needed
+              href="/products"
               className="px-6 py-3 text-lg font-semibold rounded-full 
                         bg-accent text-white shadow-lg 
                         hover:scale-105 hover:shadow-xl transition-transform duration-300"
@@ -90,9 +99,7 @@ const Home = () => {
         </div>
       </section>
 
-
-      {/* 2. Services Section (The 3 Cards) */}
-      {/* 2. Services Section (Animated Cards) */}
+      {/* 2. Services Section */}
       <section id="services" className="py-24 bg-background overflow-hidden">
         <div className="max-w-5xl mx-auto px-4">
           <motion.div
@@ -147,7 +154,6 @@ const Home = () => {
         </div>
       </section>
 
-      
       {/* 3. Tech Stack Section */}
       <section id="tech-stack" className="py-20 bg-background overflow-hidden">
         <h2 className="text-3xl font-bold text-center text-white mb-12">Our Technology Stack</h2>

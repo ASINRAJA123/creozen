@@ -4,7 +4,7 @@ import Globe from 'react-globe.gl';
 import CountUp from 'react-countup';
 import { FaBrain, FaEye, FaLaptopCode, FaUniversity, FaMapMarkerAlt } from 'react-icons/fa';
 
-// --- Content Arrays ---
+// --- Content Arrays (no changes here) ---
 const philosophyItems = [
   { title: "Simplicity", description: "Technology should be seamless and easy to adopt." },
   { title: "Precision", description: "Intelligent solutions must be accurate & reliable." },
@@ -31,17 +31,17 @@ export default function About() {
     if (globeEl.current) {
       const controls = globeEl.current.controls();
       controls.autoRotate = true;
-      controls.autoRotateSpeed = 3.5;
+      controls.autoRotateSpeed = 4.5;
       controls.enableZoom = false;
       controls.enablePan = false;
-      controls.enableRotate = false;
+      controls.enableRotate = true;
       globeEl.current.pointOfView({ lat: 25, lng: 30, altitude: 2.8 }, 1000);
     }
   }, []);
 
   return (
     <motion.section
-      className="relative pt-32 pb-24 bg-background text-gray-100 min-h-screen overflow-hidden"
+      className="relative pt-24 md:pt-32 pb-16 md:pb-24 bg-background text-gray-100 min-h-screen overflow-x-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -54,9 +54,9 @@ export default function About() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* 1. Hero */}
-        <div className="text-center mb-0">
+        <div className="text-center mb-16 lg:mb-20">
           <motion.h1
-            className="text-4xl md:text-5xl font-black uppercase tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -64,7 +64,7 @@ export default function About() {
             About <span className="text-accent">Creozen</span>
           </motion.h1>
           <motion.p
-            className="mt-6 text-lg text-gray-400 max-w-3xl mx-auto"
+            className="mt-6 text-base md:text-lg text-gray-400 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -74,11 +74,17 @@ export default function About() {
         </div>
 
         {/* 2. Who We Are & Globe */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
-          {/* Left Column */}
-          <motion.div className="space-y-8" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: "easeOut" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-16 lg:mb-24">
+          {/* Left Column (Text) */}
+          <motion.div
+            className="space-y-8"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
             <div>
-              <h2 className="text-3xl font-bold text-white mb-4">A Global AI & ML Innovation Company</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">A Global AI & ML Innovation Company</h2>
               <p className="text-gray-300 text-lg leading-relaxed">
                 Creozen is driven by the philosophy of Zen-crafted intelligence. We create solutions that combine Generative AI, Computer Vision, and Intelligent Automation, helping industries reimagine workflows, education, and enterprise efficiency.
               </p>
@@ -96,10 +102,10 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Right Column Globe */}
+          {/* Right Column (Globe) */}
           <motion.div
-            className="w-full max-w-md aspect-square relative"
-            style={{ marginLeft: '-420px' }} // move globe left
+            // --- FINAL MOBILE FIX: Hide on mobile, show on large screens ---
+            className="hidden lg:block w-full max-w-md aspect-square relative lg:-ml-[420px]"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -114,12 +120,13 @@ export default function About() {
               pointLng="lng"
               pointLabel={(d) => `<div class="bg-background/70 backdrop-blur-sm border border-accent rounded-md p-2 text-white"><b>${d.city}</b><br/>${d.desc}</div>`}
               pointColor={() => '#8A2BE2'}
-              pointRadius={0.5}
+              pointRadius={0.2}
               pointAltitude={0.02}
               arcsData={[{ startLat: 51.5074, startLng: -0.1278, endLat: 13.0827, endLng: 80.2707 }]}
-              arcColor={() => '#9932CC'}
+              arcColor={() => '#8A2BE2'}
               arcDashLength={0.4}
               arcDashGap={0.8}
+              arcStroke={0.5} // <-- smaller value = thinner line
               arcDashAnimateTime={3000}
             />
             {/* Glow behind globe */}
@@ -127,17 +134,19 @@ export default function About() {
           </motion.div>
         </div>
 
+        {/* (Rest of the component is unchanged) */}
+
         {/* 3. Stats Section */}
-        <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center mb-24 py-12 bg-background/50 rounded-xl border border-gray-800 backdrop-blur-sm" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
-          <div><h2 className="text-4xl lg:text-5xl font-bold text-accent"><CountUp end={10} duration={3} />+</h2><p className="text-gray-400 mt-2">Clients</p></div>
-          <div><h2 className="text-4xl lg:text-5xl font-bold text-accent"><CountUp end={6} duration={3} />+</h2><p className="text-gray-400 mt-2">Deployed Products</p></div>
-          <div><h2 className="text-4xl lg:text-5xl font-bold text-accent">2</h2><p className="text-gray-400 mt-2">Global Offices</p></div>
-          <div><h2 className="text-4xl lg:text-5xl font-bold text-accent">∞</h2><p className="text-gray-400 mt-2">Impact</p></div>
+        <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center mb-16 lg:mb-24 py-8 md:py-12 bg-background/50 rounded-xl border border-gray-800 backdrop-blur-sm" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
+          <div><h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-accent"><CountUp end={10} duration={3} />+</h2><p className="text-gray-400 mt-2 text-sm">Clients</p></div>
+          <div><h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-accent"><CountUp end={6} duration={3} />+</h2><p className="text-gray-400 mt-2 text-sm">Deployed Products</p></div>
+          <div><h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-accent">2</h2><p className="text-gray-400 mt-2 text-sm">Global Offices</p></div>
+          <div><h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-accent">7</h2><p className="text-gray-400 mt-2 text-sm">Impact</p></div>
         </motion.div>
 
         {/* 4. Core Focus Areas */}
-        <div className="mb-24">
-          <motion.h2 className="text-3xl font-bold text-center mb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+        <div className="mb-16 lg:mb-24">
+          <motion.h2 className="text-2xl md:text-3xl font-bold text-center mb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             Core Focus Areas
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -154,7 +163,7 @@ export default function About() {
 
         {/* 5. Philosophy */}
         <div>
-          <motion.h2 className="text-3xl font-bold text-center mb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+          <motion.h2 className="text-2xl md:text-3xl font-bold text-center mb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             Our Philosophy
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
