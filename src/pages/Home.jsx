@@ -4,7 +4,7 @@ import Orb from '../components/Orb';
 
 // --- Page Content ---
 const companyName = "Creozen";
-const mainTagline = "Zen-crafted intelligence – delivering innovative and intelligent AI solutions with simplicity and precision.";
+const mainTagline = "Zen-crafted intelligence – delivering intelligent AI solutions with simplicity and precision.";
 
 const serviceCards = [
   {
@@ -46,11 +46,12 @@ const Home = () => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       
-      {/* 1. Hero Section (Orb + Name + Tagline ONLY) */}
+      {/* 1. Hero Section (Orb + Name + Tagline + Button) */}
       <section className="relative h-screen flex flex-col items-center justify-center text-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Orb hoverIntensity={0.3} />
         </div>
+
         <div className="relative z-10 p-4">
           <motion.h1 
             className="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter"
@@ -69,8 +70,26 @@ const Home = () => {
           >
             {mainTagline}
           </motion.p>
+
+          {/* Explore Products Button */}
+          <motion.div
+            className="mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <a
+              href="#services" // 🔗 change to your products section route if needed
+              className="px-6 py-3 text-lg font-semibold rounded-full 
+                        bg-accent text-white shadow-lg 
+                        hover:scale-105 hover:shadow-xl transition-transform duration-300"
+            >
+              Explore Products
+            </a>
+          </motion.div>
         </div>
       </section>
+
 
       {/* 2. Services Section (The 3 Cards) */}
       {/* 2. Services Section (Animated Cards) */}

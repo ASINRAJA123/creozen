@@ -54,7 +54,7 @@ export default function About() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* 1. Hero */}
-        <div className="text-center mb-24">
+        <div className="text-center mb-0">
           <motion.h1
             className="text-4xl md:text-5xl font-black uppercase tracking-tight"
             initial={{ opacity: 0, y: 30 }}

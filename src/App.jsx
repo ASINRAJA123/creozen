@@ -1,12 +1,13 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
-// Correct paths from src/App.jsx
+// Import the new, separated page components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
-import ServicesProducts from './pages/ServicesProducts';
+import Services from './pages/Services'; // <-- UPDATED
+import Products from './pages/Products'; // <-- NEW
 import Contact from './pages/Contact';
 
 function App() {
@@ -20,7 +21,10 @@ function App() {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/services" element={<ServicesProducts />} />
+            {/* --- UPDATED ROUTES --- */}
+            <Route path="/services" element={<Services />} />
+            <Route path="/products" element={<Products />} /> 
+            {/* ---------------------- */}
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </AnimatePresence>
