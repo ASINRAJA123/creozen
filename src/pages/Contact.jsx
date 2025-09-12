@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
-// --- Reusable Component for Contact Info Items ---
+// --- Reusable Component for Contact Info Items (No changes here) ---
 const InfoItem = ({ icon, title, value, href }) => (
   <motion.div 
     className="flex items-start space-x-4"
@@ -19,7 +20,51 @@ const InfoItem = ({ icon, title, value, href }) => (
 
 // --- Main Contact Page Component ---
 const Contact = () => {
-  // We no longer need useState for form data or status when using FormSubmit.
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [status, setStatus] = useState('');
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // ====================================================================
+  // --- ✨ UPDATED handleSubmit Function ✨ ---
+  // This now sends the data to FormSubmit in the background.
+  // ====================================================================
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('Sending...');
+
+    try {
+      // Use the fetch API to post the data
+      const response = await fetch('https://formsubmit.co/ajax/creozen.ai@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus('Your message has been sent successfully!');
+        setFormData({ name: '', email: '', subject: '', message: '' }); // Clear the form
+      } else {
+        setStatus('Oops! Something went wrong. Please try again.');
+        console.error("FormSubmit Error:", result);
+      }
+
+    } catch (error) {
+      console.error("Submission Error:", error);
+      setStatus('Oops! Something went wrong. Please check your connection.');
+    } finally {
+      // Clear the status message after 5 seconds
+      setTimeout(() => setStatus(''), 5000);
+    }
+  };
+
 
   const containerVariants = {
     hidden: {},
@@ -51,15 +96,14 @@ const Contact = () => {
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-          {/* Left Column: Info */}
+          {/* Left Column: Info (No changes here) */}
           <motion.div 
             className="space-y-8"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            {/* InfoItem components remain the same */}
-             <InfoItem 
+            <InfoItem 
               icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>} 
               title="London HQ, UK" 
               value="124 City Road, London, EC1V 2NX"
@@ -92,44 +136,29 @@ const Contact = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            {/* --- UPDATED FORM TAG --- */}
-            <form 
-              action="https://formsubmit.co/creozen.ai@gmail.com" 
-              method="POST" 
-              target="_blank" 
-              className="space-y-6"
-            >
-              {/* Optional: Add a hidden input for a custom email subject */}
-              <input type="hidden" name="_subject" value="New Submission from Creozen Website!"></input>
-
-              {/* Optional: Disable CAPTCHA if you find it intrusive */}
-              <input type="hidden" name="_captcha" value="false"></input>
-              
+            {/* The action/method attributes are removed since we handle submission in JS */}
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-300">Name</label>
-                {/* Removed value and onChange props */}
-                <input type="text" name="name" id="name" required className="mt-1 block w-full bg-background border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-accent focus:border-accent transition" />
+                <input type="text" name="name" id="name" required value={formData.name} onChange={handleChange} className="mt-1 block w-full bg-background border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-accent focus:border-accent transition" />
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-300">Email</label>
-                {/* Removed value and onChange props */}
-                <input type="email" name="email" id="email" required className="mt-1 block w-full bg-background border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-accent focus:border-accent transition" />
+                <input type="email" name="email" id="email" required value={formData.email} onChange={handleChange} className="mt-1 block w-full bg-background border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-accent focus:border-accent transition" />
               </div>
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-300">Subject</label>
-                 {/* Removed value and onChange props */}
-                <input type="text" name="subject" id="subject" required className="mt-1 block w-full bg-background border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-accent focus:border-accent transition" />
+                <input type="text" name="subject" id="subject" required value={formData.subject} onChange={handleChange} className="mt-1 block w-full bg-background border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-accent focus:border-accent transition" />
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-300">Message</label>
-                {/* Removed value and onChange props */}
-                <textarea name="message" id="message" rows="4" required className="mt-1 block w-full bg-background border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-accent focus:border-accent transition"></textarea>
+                <textarea name="message" id="message" rows="4" required value={formData.message} onChange={handleChange} className="mt-1 block w-full bg-background border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-accent focus:border-accent transition"></textarea>
               </div>
-              <div>
+              <div className="flex items-center justify-between">
                 <button type="submit" className="inline-flex justify-center py-3 px-6 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-hover transition-colors">
                   Send Message
                 </button>
-                {/* Removed the status message */}
+                {status && <p className="text-sm text-gray-400">{status}</p>}
               </div>
             </form>
           </motion.div>
