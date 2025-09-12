@@ -78,14 +78,14 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <a
-              href="/products " // 🔗 change to your products section route if needed
+            <Link
+              to="/products"
               className="px-6 py-3 text-lg font-semibold rounded-full 
                         bg-accent text-white shadow-lg 
                         hover:scale-105 hover:shadow-xl transition-transform duration-300"
             >
               Explore Products
-            </a>
+            </Link>
           </motion.div>
         </div>
       </section>
