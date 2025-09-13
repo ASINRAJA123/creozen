@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
+
 
 // --- Content Array for Services ---
 const services = [
@@ -227,14 +229,18 @@ const Services = () => {
         </motion.div>
 
         {/* Get a Quote Button */}
+
         <div className="mt-16 flex justify-center">
           <motion.button
             onClick={() => navigate("/contact")}
-            className="px-8 py-3 text-lg font-semibold rounded-xl bg-accent text-white shadow-lg hover:bg-accent/90 transition-colors"
+            className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-lg font-medium transition-all duration-300 shadow-sm border-2 border-accent group"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Get a Quote
+            <span className="flex items-center gap-2 text-gray-400 transition-colors duration-300 group-hover:text-accent">
+              Get a Quote
+              <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+            </span>
           </motion.button>
         </div>
       </div>
