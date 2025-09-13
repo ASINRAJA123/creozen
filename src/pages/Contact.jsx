@@ -112,13 +112,13 @@ const Contact = () => {
             <InfoItem 
               icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>} 
               title="Email" 
-              value="info@creozen.com"
+              value="creozen.ai@gmail.com"
               href="mailto:info@creozen.com"
             />
             <InfoItem 
               icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>}
               title="Phone" 
-              value="+44 20 1234 5678 (London) / +91 44 1234 5678 (Chennai)"
+              value="+44 20 1234 5678 (London) / +91 6381738184 (Chennai)"
               href="tel:+442012345678"
             />
           </motion.div>

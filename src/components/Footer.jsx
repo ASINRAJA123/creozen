@@ -64,7 +64,7 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2 text-sm font-sans">
               <li className="text-gray-400">
-                Email: <a href="mailto:info@creozen.com" className="hover:text-accent transition-colors">info@creozen.com</a>
+                Email: <a href="mailto:info@creozen.com" className="hover:text-accent transition-colors">creozen.ai@gmail.com</a>
               </li>
               <li className="text-gray-400">
                 UK: <a href="tel:+442012345678" className="hover:text-accent transition-colors">+44 20 1234 5678</a>
