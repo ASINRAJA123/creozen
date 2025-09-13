@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 // --- Content Array for Services ---
 const services = [
   {
-    title: "AI & ML Consulting",
+    title: "Web and App Development",
     description:
-      "End-to-end consulting for organizations adopting AI/ML technologies, from strategy to implementation.",
+      "Designing and developing responsive websites and mobile applications with seamless user experiences and robust performance.",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -18,14 +19,28 @@ const services = [
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
-          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 
-             0v-2c0-.656-.126-1.283-.356-1.857M7 
-             20H2v-2a3 3 0 015.356-1.857M7 
-             20v-2c0-.656.126-1.283.356-1.857m0 
-             0a5.002 5.002 0 019.288 0M15 
-             7a3 3 0 11-6 0 3 3 0 016 0zm6 
-             3a2 2 0 11-4 0 2 2 0 014 0zM7 
-             10a2 2 0 11-4 0 2 2 0 014 0z"
+          d="M3 12h18M3 6h18M3 18h18"
+        />
+      </svg>
+    ),
+  },
+  {
+    title: "AI-Based Smart Analytics for Event Management",
+    description:
+      "Leveraging AI and machine learning to provide real-time insights, crowd analytics, and predictive event management solutions.",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-8 w-8"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M9 17v-6h6v6M12 3v4m6 4h4M2 7h4m6 6h4"
         />
       </svg>
     ),
@@ -33,7 +48,7 @@ const services = [
   {
     title: "Custom Product Development",
     description:
-      "Building tailored AI/ML applications and software from the ground up to meet your specific business needs.",
+      "Building tailored AI, software, and IoT products to meet specific business goals, from ideation to deployment.",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -52,55 +67,9 @@ const services = [
     ),
   },
   {
-    title: "Video Analytics Solutions",
+    title: "AI-Based Training",
     description:
-      "Implementing real-time DeepStream and computer vision solutions for enterprise-level monitoring and analysis.",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M15 10l4.553-2.276A1 1 0 0121 
-             8.618v6.764a1 1 0 01-1.447.894L15 
-             14M5 18h8a2 2 0 002-2V8a2 2 0 
-             00-2-2H5a2 2 0 00-2 2v8a2 2 0 
-             002 2z"
-        />
-      </svg>
-    ),
-  },
-  {
-    title: "Enterprise Integrations",
-    description:
-      "Deploying intelligent chatbots, automation tools, and internal knowledge systems to streamline your operations.",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-        />
-      </svg>
-    ),
-  },
-  {
-    title: "Events & Training",
-    description:
-      "Conducting AI workshops, hackathons, and corporate training sessions for businesses and institutions.",
+      "Conducting corporate training, workshops, and hands-on sessions focused on AI and machine learning technologies for upskilling teams.",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -130,12 +99,57 @@ const services = [
       </svg>
     ),
   },
+  {
+    title: "Enterprise-Level Automations",
+    description:
+      "Implementing intelligent automation solutions, including chatbots, workflow optimization, and internal knowledge systems for enterprises.",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-8 w-8"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+        />
+      </svg>
+    ),
+  },
+  {
+    title: "Smart IoT & Connected Solutions",
+    description:
+      "Creating connected ecosystems through IoT devices and intelligent systems that integrate seamlessly with web, mobile, and enterprise applications.",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-8 w-8"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M12 8c-1.105 0-2 .895-2 2s.895 2 2 2 
+             2-.895 2-2-.895-2-2-2zm0 10c-4.418 
+             0-8-3.582-8-8s3.582-8 8-8 8 3.582 
+             8 8-3.582 8-8 8z"
+        />
+      </svg>
+    ),
+  },
 ];
 
 // --- Reusable Animated Card Component ---
 const ServiceCard = ({ title, description, icon }) => (
   <motion.div
-    className="bg-primary p-6 rounded-2xl border border-gray-800 flex flex-col items-start text-left h-full shadow-lg cursor-pointe"
+    className="bg-primary p-6 rounded-2xl border border-gray-800 flex flex-col items-start text-left h-full shadow-lg cursor-pointer"
     variants={{
       hidden: { opacity: 0, y: 40, scale: 0.9 },
       visible: {
@@ -161,6 +175,8 @@ const ServiceCard = ({ title, description, icon }) => (
 
 // --- Main Page Component ---
 const Services = () => {
+  const navigate = useNavigate();
+
   const containerVariants = {
     hidden: {},
     visible: {
@@ -209,6 +225,18 @@ const Services = () => {
             <ServiceCard key={index} {...service} />
           ))}
         </motion.div>
+
+        {/* Get a Quote Button */}
+        <div className="mt-16 flex justify-center">
+          <motion.button
+            onClick={() => navigate("/contact")}
+            className="px-8 py-3 text-lg font-semibold rounded-xl bg-accent text-white shadow-lg hover:bg-accent/90 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Get a Quote
+          </motion.button>
+        </div>
       </div>
     </motion.div>
   );

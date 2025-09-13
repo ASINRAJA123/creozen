@@ -161,7 +161,7 @@ const Home = () => {
       </section>
 
       {/* 3. Tech Stack Section */}
-      <section id="tech-stack" className="py-20 bg-background overflow-hidden">
+      <section id="tech-stack" className="py-20 bg-background overflow-hidden ">
         <h2 className="text-3xl font-bold text-center text-white mb-12">Our Technology Stack</h2>
         <Marquee gradient={true} gradientColor={[10, 10, 10]} speed={40}>
           {techStack.map(tech => <span key={tech} className="text-2xl font-bold text-gray-600 mx-12">{tech}</span>)}

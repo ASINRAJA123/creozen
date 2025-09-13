@@ -29,16 +29,37 @@ export default function About() {
 
   // Initialize globe
   useEffect(() => {
-    if (globeEl.current) {
-      const controls = globeEl.current.controls();
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 4.5;
-      controls.enableZoom = false;
-      controls.enablePan = false;
-      controls.enableRotate = true;
-      globeEl.current.pointOfView({ lat: 25, lng: 30, altitude: 2.8 }, 1000);
-    }
-  }, []);
+  if (globeEl.current) {
+    const controls = globeEl.current.controls();
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 4.5;
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.enableRotate = true;
+
+    // Initial alignment
+    globeEl.current.pointOfView({ lat: 25, lng: 30, altitude: 2.8 }, 1000);
+
+    let resetTimeout;
+
+    // Detect when user stops rotating
+    const handleInteractionEnd = () => {
+      clearTimeout(resetTimeout);
+      // wait 2s after interaction ends, then re-align
+      resetTimeout = setTimeout(() => {
+        globeEl.current.pointOfView({ lat: 25, lng: 30, altitude: 2.8 }, 2000);
+      }, 2000);
+    };
+
+    controls.addEventListener("end", handleInteractionEnd);
+
+    return () => {
+      controls.removeEventListener("end", handleInteractionEnd);
+      clearTimeout(resetTimeout);
+    };
+  }
+}, []);
+
 
   // Function to move globe to clicked location
   const handleLocationClick = (lat, lng) => {
@@ -116,7 +137,7 @@ export default function About() {
 
           {/* Right Column (Globe) */}
           <motion.div
-            className="hidden lg:block w-full max-w-md aspect-square relative lg:-ml-[26.25rem]"
+            className="w-full max-w-md aspect-square relative mx-auto mb-12 lg:mb-0 lg:order-last lg:-ml-[26.25rem]"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}

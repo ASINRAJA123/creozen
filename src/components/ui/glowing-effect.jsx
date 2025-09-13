@@ -136,7 +136,7 @@ const GlowingEffect = memo(
                   from 236.84deg at 50% 50%,
                   #dd7bbb 0%,
                   #c11ed7ff calc(25% / 5),
-                  #7a064cff calc(50% / 5), 
+                  #fd6ec4ff calc(50% / 5), 
                   #b119f7ff calc(75% / 5),
                   #dd7bbb calc(100% / 5)
                 )`,
