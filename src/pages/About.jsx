@@ -4,7 +4,7 @@ import Globe from 'react-globe.gl';
 import CountUp from 'react-countup';
 import { FaBrain, FaEye, FaLaptopCode, FaUniversity, FaMapMarkerAlt } from 'react-icons/fa';
 
-// --- Content Arrays (no changes here) ---
+// --- Content Arrays ---
 const philosophyItems = [
   { title: "Simplicity", description: "Technology should be seamless and easy to adopt." },
   { title: "Precision", description: "Intelligent solutions must be accurate & reliable." },
@@ -27,6 +27,7 @@ const locations = [
 export default function About() {
   const globeEl = useRef();
 
+  // Initialize globe
   useEffect(() => {
     if (globeEl.current) {
       const controls = globeEl.current.controls();
@@ -38,6 +39,13 @@ export default function About() {
       globeEl.current.pointOfView({ lat: 25, lng: 30, altitude: 2.8 }, 1000);
     }
   }, []);
+
+  // Function to move globe to clicked location
+  const handleLocationClick = (lat, lng) => {
+    if (globeEl.current) {
+      globeEl.current.pointOfView({ lat, lng, altitude: 2.5 }, 1500);
+    }
+  };
 
   return (
     <motion.section
@@ -75,7 +83,7 @@ export default function About() {
 
         {/* 2. Who We Are & Globe */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-16 lg:mb-24">
-          {/* Left Column (Text) */}
+          {/* Left Column (Text & Locations) */}
           <motion.div
             className="space-y-8"
             initial={{ opacity: 0, x: -30 }}
@@ -91,7 +99,11 @@ export default function About() {
             </div>
             <div className="space-y-4">
               {locations.map((location, i) => (
-                <div key={i} className="bg-background/50 p-5 rounded-lg border border-gray-800 flex items-start space-x-4 hover:border-accent transition-colors backdrop-blur-sm">
+                <div
+                  key={i}
+                  onClick={() => handleLocationClick(location.lat, location.lng)}
+                  className="cursor-pointer bg-background/50 p-5 rounded-lg border border-gray-800 flex items-start space-x-4 hover:border-accent transition-colors backdrop-blur-sm"
+                >
                   <div className="text-accent mt-1"><FaMapMarkerAlt size={20} /></div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">{location.city}</h3>
@@ -104,7 +116,6 @@ export default function About() {
 
           {/* Right Column (Globe) */}
           <motion.div
-            // --- FINAL MOBILE FIX: Hide on mobile, show on large screens ---
             className="hidden lg:block w-full max-w-md aspect-square relative lg:-ml-[420px]"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -126,15 +137,12 @@ export default function About() {
               arcColor={() => '#8A2BE2'}
               arcDashLength={0.4}
               arcDashGap={0.8}
-              arcStroke={0.5} // <-- smaller value = thinner line
+              arcStroke={0.5}
               arcDashAnimateTime={3000}
             />
-            {/* Glow behind globe */}
             <div className="absolute inset-0 w-full h-full rounded-full bg-gradient-to-tr from-purple-500/10 to-pink-500/10 filter blur-2xl pointer-events-none"></div>
           </motion.div>
         </div>
-
-        {/* (Rest of the component is unchanged) */}
 
         {/* 3. Stats Section */}
         <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center mb-16 lg:mb-24 py-8 md:py-12 bg-background/50 rounded-xl border border-gray-800 backdrop-blur-sm" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
