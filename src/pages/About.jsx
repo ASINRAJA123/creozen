@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Globe from 'react-globe.gl';
 import CountUp from 'react-countup';
@@ -26,44 +26,67 @@ const locations = [
 // --- About Component ---
 export default function About() {
   const globeEl = useRef();
+  const [isDesktop, setIsDesktop] = useState(false);
 
-  // Initialize globe
+  // Check for desktop screen size to conditionally render the globe
   useEffect(() => {
-  if (globeEl.current) {
-    const controls = globeEl.current.controls();
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 4.5;
-    controls.enableZoom = false;
-    controls.enablePan = false;
-    controls.enableRotate = true;
-
-    // Initial alignment
-    globeEl.current.pointOfView({ lat: 25, lng: 30, altitude: 2.8 }, 1000);
-
-    let resetTimeout;
-
-    // Detect when user stops rotating
-    const handleInteractionEnd = () => {
-      clearTimeout(resetTimeout);
-      // wait 2s after interaction ends, then re-align
-      resetTimeout = setTimeout(() => {
-        globeEl.current.pointOfView({ lat: 25, lng: 30, altitude: 2.8 }, 2000);
-      }, 2000);
+    const checkScreenSize = () => {
+      // Tailwind's 'lg' breakpoint is 1024px
+      setIsDesktop(window.innerWidth >= 1024);
     };
 
-    controls.addEventListener("end", handleInteractionEnd);
+    // Check on initial mount
+    checkScreenSize();
 
-    return () => {
-      controls.removeEventListener("end", handleInteractionEnd);
-      clearTimeout(resetTimeout);
-    };
-  }
-}, []);
+    // Add resize listener
+    window.addEventListener('resize', checkScreenSize);
+
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+
+  // Initialize globe, now dependent on isDesktop
+  useEffect(() => {
+    // Only run if it's desktop and the globe element exists
+    if (isDesktop && globeEl.current) {
+      const controls = globeEl.current.controls();
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 4.5;
+      controls.enableZoom = false;
+      controls.enablePan = false;
+      controls.enableRotate = true;
+
+      // Initial alignment
+      globeEl.current.pointOfView({ lat: 25, lng: 30, altitude: 2.8 }, 1000);
+
+      let resetTimeout;
+
+      // Detect when user stops rotating
+      const handleInteractionEnd = () => {
+        clearTimeout(resetTimeout);
+        // wait 2s after interaction ends, then re-align
+        resetTimeout = setTimeout(() => {
+          // Check if globeEl.current still exists before calling pointOfView
+          if (globeEl.current) {
+            globeEl.current.pointOfView({ lat: 25, lng: 30, altitude: 2.8 }, 2000);
+          }
+        }, 2000);
+      };
+
+      controls.addEventListener("end", handleInteractionEnd);
+
+      return () => {
+        controls.removeEventListener("end", handleInteractionEnd);
+        clearTimeout(resetTimeout);
+      };
+    }
+  }, [isDesktop]); // Rerun this effect if isDesktop changes
 
 
   // Function to move globe to clicked location
   const handleLocationClick = (lat, lng) => {
-    if (globeEl.current) {
+    if (isDesktop && globeEl.current) {
       globeEl.current.pointOfView({ lat, lng, altitude: 2.5 }, 1500);
     }
   };
@@ -122,8 +145,10 @@ export default function About() {
               {locations.map((location, i) => (
                 <div
                   key={i}
-                  onClick={() => handleLocationClick(location.lat, location.lng)}
-                  className="cursor-pointer bg-background/50 p-5 rounded-lg border border-gray-800 flex items-start space-x-4 hover:border-accent transition-colors backdrop-blur-sm"
+                  onClick={isDesktop ? () => handleLocationClick(location.lat, location.lng) : undefined}
+                  className={`bg-background/50 p-5 rounded-lg border border-gray-800 flex items-start space-x-4 backdrop-blur-sm transition-colors ${
+                    isDesktop ? 'cursor-pointer hover:border-accent' : ''
+                  }`}
                 >
                   <div className="text-accent mt-1"><FaMapMarkerAlt size={20} /></div>
                   <div>
@@ -135,55 +160,56 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Right Column (Globe) */}
-          <motion.div
-            className="w-full max-w-md aspect-square relative mx-auto mb-12 lg:mb-0 lg:order-last lg:-ml-[26.25rem]"
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-          >
-            <Globe
-              ref={globeEl}
-              globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
-              backgroundColor="rgba(0,0,0,0)"
-              
-              /* --- POINTS (pulsing glowing dots) --- */
-              pointsData={locations}
-              pointLat="lat"
-              pointLng="lng"
-              pointLabel={(d) =>
-                `<div class="bg-background/70 backdrop-blur-sm border border-accent rounded-md p-2 text-white">
-                  <b>${d.city}</b><br/>${d.desc}
-                </div>`
-              }
-              pointColor={() => "#ff4d6d"}   // neon pink
-              pointRadius={0.45}
-              pointAltitude={0.03}
-              pointResolution={12} // smoother dots
+          {/* Right Column (Globe) - Rendered only on desktop */}
+          {isDesktop && (
+            <motion.div
+              className="w-full max-w-md aspect-square relative mx-auto mb-12 lg:mb-0 lg:order-last lg:-ml-[26.25rem]"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
+            >
+              <Globe
+                ref={globeEl}
+                globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
+                backgroundColor="rgba(0,0,0,0)"
 
-              /* --- HALO RINGS --- */
-              ringsData={locations}
-              ringLat="lat"
-              ringLng="lng"
-              ringColor={() => "#f80d38ff"}
-              ringMaxRadius={4}
-              ringPropagationSpeed={2}
-              ringRepeatPeriod={2000}
+                /* --- POINTS (pulsing glowing dots) --- */
+                pointsData={locations}
+                pointLat="lat"
+                pointLng="lng"
+                pointLabel={(d) =>
+                  `<div class="bg-background/70 backdrop-blur-sm border border-accent rounded-md p-2 text-white">
+                    <b>${d.city}</b><br/>${d.desc}
+                  </div>`
+                }
+                pointColor={() => "#ff4d6d"}   // neon pink
+                pointRadius={0.45}
+                pointAltitude={0.03}
+                pointResolution={12} // smoother dots
 
-              /* --- ARC CONNECTIONS --- */
-              arcsData={[
-                { startLat: 51.5074, startLng: -0.1278, endLat: 13.0827, endLng: 80.2707 }
-              ]}
-              arcColor={() => ["#8A2BE2", "#8A2BE2", "#8A2BE2"]}
-              arcDashLength={0.9}
-              arcDashGap={0.9}
-              arcStroke={1}
-              arcDashAnimateTime={2500}
-            />
+                /* --- HALO RINGS --- */
+                ringsData={locations}
+                ringLat="lat"
+                ringLng="lng"
+                ringColor={() => "#f80d38ff"}
+                ringMaxRadius={4}
+                ringPropagationSpeed={2}
+                ringRepeatPeriod={2000}
 
-            <div className="absolute inset-0 w-full h-full rounded-full bg-gradient-to-tr from-purple-500/10 to-pink-500/10 filter blur-2xl pointer-events-none"></div>
-          </motion.div>
+                /* --- ARC CONNECTIONS --- */
+                arcsData={[
+                  { startLat: 51.5074, startLng: -0.1278, endLat: 13.0827, endLng: 80.2707 }
+                ]}
+                arcColor={() => ["#8A2BE2", "#8A2BE2", "#8A2BE2"]}
+                arcDashLength={0.9}
+                arcDashGap={0.9}
+                arcStroke={1}
+                arcDashAnimateTime={2500}
+              />
+              <div className="absolute inset-0 w-full h-full rounded-full bg-gradient-to-tr from-purple-500/10 to-pink-500/10 filter blur-2xl pointer-events-none"></div>
+            </motion.div>
+          )}
         </div>
 
         {/* 3. Stats Section */}
