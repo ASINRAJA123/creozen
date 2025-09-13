@@ -116,7 +116,7 @@ export default function About() {
 
           {/* Right Column (Globe) */}
           <motion.div
-            className="hidden lg:block w-full max-w-md aspect-square relative lg:-ml-[420px]"
+            className="hidden lg:block w-full max-w-md aspect-square relative lg:-ml-[26.25rem]"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
