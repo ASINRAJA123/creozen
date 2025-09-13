@@ -147,20 +147,41 @@ export default function About() {
               ref={globeEl}
               globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
               backgroundColor="rgba(0,0,0,0)"
+              
+              /* --- POINTS (pulsing glowing dots) --- */
               pointsData={locations}
               pointLat="lat"
               pointLng="lng"
-              pointLabel={(d) => `<div class="bg-background/70 backdrop-blur-sm border border-accent rounded-md p-2 text-white"><b>${d.city}</b><br/>${d.desc}</div>`}
-              pointColor={() => '#8A2BE2'}
-              pointRadius={0.2}
-              pointAltitude={0.02}
-              arcsData={[{ startLat: 51.5074, startLng: -0.1278, endLat: 13.0827, endLng: 80.2707 }]}
-              arcColor={() => '#8A2BE2'}
-              arcDashLength={0.4}
-              arcDashGap={0.8}
-              arcStroke={0.5}
-              arcDashAnimateTime={3000}
+              pointLabel={(d) =>
+                `<div class="bg-background/70 backdrop-blur-sm border border-accent rounded-md p-2 text-white">
+                  <b>${d.city}</b><br/>${d.desc}
+                </div>`
+              }
+              pointColor={() => "#ff4d6d"}   // neon pink
+              pointRadius={0.45}
+              pointAltitude={0.03}
+              pointResolution={12} // smoother dots
+
+              /* --- HALO RINGS --- */
+              ringsData={locations}
+              ringLat="lat"
+              ringLng="lng"
+              ringColor={() => "#f80d38ff"}
+              ringMaxRadius={4}
+              ringPropagationSpeed={2}
+              ringRepeatPeriod={2000}
+
+              /* --- ARC CONNECTIONS --- */
+              arcsData={[
+                { startLat: 51.5074, startLng: -0.1278, endLat: 13.0827, endLng: 80.2707 }
+              ]}
+              arcColor={() => ["#8A2BE2", "#8A2BE2", "#8A2BE2"]}
+              arcDashLength={0.9}
+              arcDashGap={0.9}
+              arcStroke={1}
+              arcDashAnimateTime={2500}
             />
+
             <div className="absolute inset-0 w-full h-full rounded-full bg-gradient-to-tr from-purple-500/10 to-pink-500/10 filter blur-2xl pointer-events-none"></div>
           </motion.div>
         </div>
