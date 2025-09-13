@@ -135,9 +135,9 @@ const GlowingEffect = memo(
                 repeating-conic-gradient(
                   from 236.84deg at 50% 50%,
                   #dd7bbb 0%,
-                  #d79f1e calc(25% / 5),
-                  #5a922c calc(50% / 5), 
-                  #4c7894 calc(75% / 5),
+                  #c11ed7ff calc(25% / 5),
+                  #7a064cff calc(50% / 5), 
+                  #b119f7ff calc(75% / 5),
                   #dd7bbb calc(100% / 5)
                 )`,
           }}

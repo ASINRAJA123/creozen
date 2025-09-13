@@ -51,9 +51,11 @@ const Home = () => {
           <Orb hoverIntensity={0.3} />
         </div>
 
+        {/* --- UPDATED RESPONSIVE HERO CONTENT --- */}
         <div className="relative z-10 p-4">
           <motion.h1 
-            className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter"
+            // CHANGE: Smaller base font size, with smoother scaling up
+            className="text-4xl sm:text-6xl md:text-8xl font-black text-white uppercase tracking-tighter"
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -69,11 +71,13 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             {/* Mobile Tagline */}
-            <p className="block md:hidden text-lg text-gray-300">
+            {/* CHANGE: Smaller base font size for small devices */}
+            <p className="block md:hidden text-base sm:text-lg text-gray-300">
               Zen-crafted intelligence
             </p>
 
             {/* Desktop Tagline */}
+            {/* No change needed here as it only appears on medium screens and up */}
             <p
               className="hidden md:block text-lg md:text-xl text-gray-300"
               dangerouslySetInnerHTML={{ __html: mainTagline }}
@@ -82,14 +86,16 @@ const Home = () => {
 
           {/* Explore Products Button */}
           <motion.div
-            className="mt-8"
+            // CHANGE: Smaller base margin-top
+            className="mt-6 md:mt-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <a
               href="/products"
-              className="px-6 py-3 text-lg font-semibold rounded-full 
+              // CHANGE: Smaller base padding and font size, scaling up on medium screens
+              className="inline-block px-5 py-2.5 text-base md:px-6 md:py-3 md:text-lg font-semibold rounded-full 
                         bg-accent text-white shadow-lg 
                         hover:scale-105 hover:shadow-xl transition-transform duration-300"
             >
