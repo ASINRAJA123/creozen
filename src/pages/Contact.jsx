@@ -26,17 +26,12 @@ const Contact = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  // ====================================================================
-  // --- ✨ UPDATED handleSubmit Function ✨ ---
-  // This now sends the data to FormSubmit in the background.
-  // ====================================================================
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('Sending...');
 
     try {
-      // Use the fetch API to post the data
       const response = await fetch('https://formsubmit.co/ajax/creozen.ai@gmail.com', {
         method: 'POST',
         headers: {
@@ -50,7 +45,7 @@ const Contact = () => {
 
       if (result.success) {
         setStatus('Your message has been sent successfully!');
-        setFormData({ name: '', email: '', subject: '', message: '' }); // Clear the form
+        setFormData({ name: '', email: '', subject: '', message: '' });
       } else {
         setStatus('Oops! Something went wrong. Please try again.');
         console.error("FormSubmit Error:", result);
@@ -60,7 +55,6 @@ const Contact = () => {
       console.error("Submission Error:", error);
       setStatus('Oops! Something went wrong. Please check your connection.');
     } finally {
-      // Clear the status message after 5 seconds
       setTimeout(() => setStatus(''), 5000);
     }
   };
@@ -136,7 +130,6 @@ const Contact = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            {/* The action/method attributes are removed since we handle submission in JS */}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-300">Name</label>
@@ -154,12 +147,29 @@ const Contact = () => {
                 <label htmlFor="message" className="block text-sm font-medium text-gray-300">Message</label>
                 <textarea name="message" id="message" rows="4" required value={formData.message} onChange={handleChange} className="mt-1 block w-full bg-background border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-accent focus:border-accent transition"></textarea>
               </div>
-              <div className="flex items-center justify-between">
+
+              {/* ========================================================== */}
+              {/* --- ✨ UPDATED BUTTON AND STATUS MESSAGE AREA ✨ --- */}
+              {/* ========================================================== */}
+              <div>
                 <button type="submit" className="inline-flex justify-center py-3 px-6 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-hover transition-colors">
                   Send Message
                 </button>
-                {status && <p className="text-sm text-gray-400">{status}</p>}
+                
+                {/* Status Message Container: Reserves space to prevent layout shift */}
+                <div className="mt-4 h-5">
+                  {status && (
+                    <p className={`text-sm ${
+                      status.includes('successfully') ? 'text-green-400' :
+                      status.includes('Oops') ? 'text-red-400' :
+                      'text-gray-400' // Default for "Sending..."
+                    }`}>
+                      {status}
+                    </p>
+                  )}
+                </div>
               </div>
+
             </form>
           </motion.div>
           

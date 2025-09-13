@@ -1,148 +1,228 @@
+// src/pages/Products.jsx
+"use client";
+
 import { useState } from 'react';
+// 1. Import AnimatePresence from framer-motion
 import { motion, AnimatePresence } from 'framer-motion';
+import { GlowingEffect } from '../components/ui/glowing-effect';
+import { ClipboardCheck, GitFork, Bot, Users, CheckSquare } from 'lucide-react';
 
-// --- Reusable Icon Components for clarity ---
-const LinkIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-  </svg>
-);
+// 2. Define animation variants for the container and its items
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1, // Animate each card with a 0.1s delay
+    },
+  },
+};
 
-const ChevronIcon = ({ isExpanded }) => (
-  <motion.svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6 text-purple-400"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={3}
-    animate={{ rotate: isExpanded ? 90 : 0 }}
-    transition={{ duration: 0.3, ease: "easeInOut" }}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-  </motion.svg>
-);
-
-
-// --- Refactored ProductCategoryCard (Child Component) ---
-// This component is now "dumb". It receives its state from the parent.
-const ProductCategoryCard = ({ category, isExpanded, onToggle }) => {
-  return (
-    <motion.div
-      layout
-      // The main container has a subtle purple border on the left to match the design
-      className="bg-[#16181D] p-6 lg:p-8 rounded-xl transition-colors duration-300"
-    >
-      <motion.div layout className="cursor-pointer" onClick={onToggle}>
-        <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-white">{category.title}</h2>
-          <ChevronIcon isExpanded={isExpanded} />
-        </div>
-        <p className="text-gray-300 mt-4 leading-relaxed">{category.description}</p>
-      </motion.div>
-
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            layout
-            initial="collapsed"
-            animate="open"
-            exit="collapsed"
-            variants={{
-              open: { opacity: 1, height: "auto", marginTop: '24px' },
-              collapsed: { opacity: 0, height: 0, marginTop: '0px' },
-            }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="space-y-4 overflow-hidden"
-          >
-            {category.products.map((p, i) => (
-              <motion.div
-                key={i}
-                variants={{
-                  open: { opacity: 1, y: 0 },
-                  collapsed: { opacity: 0, y: 20 },
-                }}
-                transition={{ duration: 0.3 }}
-                className="p-4 bg-slate-800/50 rounded-lg border border-slate-700"
-              >
-                <h3 className="text-lg font-semibold text-white">{p.title}</h3>
-                <p className="text-gray-400 text-sm mt-1">{p.short}</p>
-                {/* <a
-                  href={p.url || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors"
-                  onClick={(e) => e.stopPropagation()} // Prevents card from closing when link is clicked
-                >
-                  <LinkIcon />
-                  More Details
-                </a> */}
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  },
 };
 
 
-// --- Main Products Page (Parent Component) ---
+// 3. --- ProductCard Component ---
+//    - Changed <li> to motion.li
+//    - Added the itemVariants to orchestrate the animation
+const ProductCard = ({ area, icon, title, description }) => (
+  <motion.li className={`list-none ${area}`} variants={itemVariants}>
+    <div className="relative h-full rounded-2xl border border-neutral-800 bg-primary-900 p-2 md:rounded-3xl md:p-3">
+      {/* Glowing effect */}
+      <GlowingEffect
+        spread={200}
+        glow={true}
+        disabled={false}
+        proximity={100}
+        inactiveZone={0.01}
+        borderWidth={5}
+        color="rgba(0, 200, 255, 0.9)"
+      />
+
+      {/* Inner content card */}
+      <div className="relative flex h-full flex-col justify-between gap-6 overflow-visible rounded-xl bg-primary p-4 shadow-[0px_0px_27px_0px_#151515] md:p-6">
+        <div className="flex flex-1 flex-col gap-3">
+          {/* Icon */}
+          <div className="w-fit rounded-lg border border-neutral-700 p-2">{icon}</div>
+
+          {/* Text */}
+          <div className="space-y-2 md:space-y-3">
+            <h3 className="pt-0.5 font-sans text-xl font-semibold text-white md:text-2xl">{title}</h3>
+            <div className="space-y-1 text-sm text-neutral-400 md:text-base">{description}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </motion.li>
+);
+
+// --- Product Categories Data ---
+const productCategories = {
+  university: [
+    {
+      area: 'md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]',
+      icon: <ClipboardCheck className="h-5 w-5 text-neutral-400" />,
+      title: 'Assessly – Smart Assessment Platform',
+      description: (
+        <>
+          <p>• Designed for educational & corporate institutions.</p>
+          <p>• Supports MCQ tests, coding challenges, and recruitment.</p>
+          <p>• Auto-generates questions and includes a Python compiler.</p>
+        </>
+      ),
+    },
+    {
+      area: 'md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]',
+      icon: <GitFork className="h-5 w-5 text-neutral-400" />,
+      title: 'SkillSync – Full Coding Test Ecosystem',
+      description: (
+        <>
+          <p>• End-to-end platform for institutional coding evaluations.</p>
+          <p>• Covers slot booking, test setup, and database management.</p>
+          <p>• For universities & companies with large-scale tests.</p>
+        </>
+      ),
+    },
+    {
+      area: 'md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]',
+      icon: <Bot className="h-5 w-5 text-neutral-400" />,
+      title: 'IntraQuest – AI Knowledge Assistant',
+      description: (
+        <>
+          <p>• Context-aware chatbot for internal organizational knowledge.</p>
+          <p>• Integrates with schools, hospitals, and enterprises.</p>
+          <p>• Boosts productivity with instant, secure answers.</p>
+        </>
+      ),
+    },
+    {
+      area: 'md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]',
+      icon: <Users className="h-5 w-5 text-neutral-400" />,
+      title: 'Mock Bridge – AI + Human Mock Interviews',
+      description: (
+        <>
+          <p>• Interview prep for IT, law, management, and more.</p>
+          <p>• Connect with human interviewers for realistic practice.</p>
+          <p>• Get combined AI and human feedback to improve.</p>
+        </>
+      ),
+    },
+    {
+      area: 'md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]',
+      icon: <CheckSquare className="h-5 w-5 text-neutral-400" />,
+      title: 'AttendEase – Smart Attendance System',
+      description: (
+        <>
+          <p>• Paperless, tamper-proof attendance via session OTPs.</p>
+          <p>• Students enter a brief on-screen code to mark presence.</p>
+          <p>• Saves time and ensures transparent, accurate records.</p>
+        </>
+      ),
+    },
+  ],
+
+  smartAnalytics: [
+    {
+      area: 'md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]',
+      icon: <ClipboardCheck className="h-5 w-5 text-neutral-400" />,
+      title: 'People Analytics – Real-Time Monitoring',
+      description: (
+        <>
+          <p>• Counting & tracking people in real-time.</p>
+          <p>• Waiting time calculation and queue management.</p>
+          <p>• Re-Identification (ReID) for up to 10 people via face & body embeddings.</p>
+          <p>• Custom AI models optimized for client environments.</p>
+        </>
+      ),
+    },
+    {
+      area: 'md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]',
+      icon: <GitFork className="h-5 w-5 text-neutral-400" />,
+      title: 'Vehicle Analytics – Detection & Tracking',
+      description: (
+        <>
+          <p>• Real-time vehicle counting & tracking.</p>
+          <p>• License plate detection and automated logging.</p>
+          <p>• Custom AI models tuned for multiple vehicle types, lighting, and angles.</p>
+        </>
+      ),
+    },
+    {
+      area: 'md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]',
+      icon: <Bot className="h-5 w-5 text-neutral-400" />,
+      title: 'Computer Vision Analytics – Product Inspection',
+      description: (
+        <>
+          <p>• Steel identification: measures size, type, and defects in real-time.</p>
+          <p>• Turmeric holes identification for quality assurance.</p>
+          <p>• Custom-trained AI models for high precision in manufacturing or food processing.</p>
+        </>
+      ),
+    },
+    {
+      area: 'md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]',
+      icon: <Users className="h-5 w-5 text-neutral-400" />,
+      title: 'Customer Care – ARC Transportation',
+      description: (
+        <>
+          <p>• AI-powered fleet & personnel management with real-time tracking.</p>
+          <p>• Natural language Text-to-SQL queries for shipment, vehicle, or staff info.</p>
+          <p>• Role-based workflow, automated reporting, predictive analytics, and scalable architecture.</p>
+        </>
+      ),
+    },
+    {
+      area: 'md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]',
+      icon: <CheckSquare className="h-5 w-5 text-neutral-400" />,
+      title: 'Industry Analytics & Invoice Processing',
+      description: (
+        <>
+          <p>• Product & bolt counting, dimension measurement, and defect detection.</p>
+          <p>• AI-driven invoice processing: extracts text & structured data from PDFs/scans.</p>
+          <p>• Automates quality control, inventory management, and financial record keeping.</p>
+        </>
+      ),
+    },
+  ],
+};
+
+// --- Main Products Component ---
 const Products = () => {
-  // ✨ STATE IS LIFTED UP to the parent component ✨
-  // We store the title of the currently open category. null means none are open.
-  const [openCategory, setOpenCategory] = useState('Education & Productivity Tools'); // Start with the first one open
+  const [category, setCategory] = useState('smartAnalytics'); // default category
 
-  const handleToggle = (categoryTitle) => {
-    // If the clicked category is already open, close it. Otherwise, open the new one.
-    setOpenCategory(prev => prev === categoryTitle ? null : categoryTitle);
-  };
-
-  const productData = [
-    {
-      title: 'Education & Productivity Tools',
-      description: 'Comprehensive AI-driven platforms designed to simplify assessments, streamline communication, enhance learning outcomes, and automate tasks. These solutions empower organizations with intelligent automation and productivity tools.',
-      products: [
-        { title: 'Assessly', short: 'Auto-generate assessments with coding challenges.' },
-        { title: 'IntraQuest', short: 'Internal chatbot for instant student/employee answers.' },
-        { title: 'Mock Bridge', short: 'AI + human interview practice with feedback.' },
-        { title: 'AttendEase', short: 'Smart OTP-based attendance system.' },
-      ]
-    },
-    {
-      title: 'AI-Powered Video Analytics',
-      description: 'Advanced real-time video intelligence platform that processes live streams instantly, delivering actionable insights for businesses, sports, security, and agriculture. From anomaly detection to summarization, it helps organizations make data-driven decisions quickly.',
-      products: [
-         { title: "Real-time Video Processing", short: "Ensures instant analysis of video streams without lag." },
-         { title: "Object Counting & Re-identification", short: "Tracks objects, recognizing repeat appearances." },
-         { title: "Waiting Time Calculation", short: "Measures how long people/objects wait in a location." },
-         { title: "Video Summarization", short: "Compresses hours of footage into key highlights." }
-      ]
-    },
-  ];
+  const productData = productCategories[category];
 
   return (
     <motion.div
-      className="relative pt-32 pb-24 min-h-screen overflow-hidden"
+      className="relative min-h-screen overflow-hidden bg-black pt-32 pb-24"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* --- Glow Effects --- */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full filter blur-3xl pointer-events-none"></div>
-      <div className="absolute top-0 left-0 w-50 h-96 bg-gradient-to-br from-purple-500/20 to-transparent filter blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-pink-500/20 to-transparent rounded-full filter blur-3xl pointer-events-none"></div>
-      <div className="absolute inset-1/4 w-1/2 h-1/2 rounded-full bg-gradient-to-tr from-purple-500/10 to-pink-500/10 filter blur-xl pointer-events-none"></div>
-      
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Background Glows */}
+      <div className="pointer-events-none absolute top-0 left-0 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/20 to-transparent filter blur-3xl"></div>
+      <div className="pointer-events-none absolute bottom-0 right-0 h-96 w-96 rounded-full bg-gradient-to-tl from-pink-500/20 to-transparent filter blur-3xl"></div>
+      <div className="pointer-events-none absolute inset-1/4 h-1/2 w-1/2 rounded-full bg-gradient-to-tr from-purple-500/10 to-pink-500/10 filter blur-xl"></div>
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Title */}
         <motion.div
-          className="text-center mb-16"
+          className="mb-12 text-center"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
         >
-          <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">
+          <h1 className="text-4xl font-black uppercase tracking-tight text-white md:text-5xl">
             Our Products
           </h1>
           <p className="mt-4 text-lg text-gray-400">
@@ -150,19 +230,55 @@ const Products = () => {
           </p>
         </motion.div>
 
-        {/* --- Main Product Grid --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          {productData.map((category) => (
-            <ProductCategoryCard
-              key={category.title}
-              category={category}
-              // Pass down whether this specific card should be expanded
-              isExpanded={openCategory === category.title}
-              // Pass down the function to call when this card is clicked
-              onToggle={() => handleToggle(category.title)}
-            />
-          ))}
+        {/* Category Buttons */}
+                {/* Category Buttons */}
+        <div className="mb-8 -mt-4 flex justify-center gap-4">
+          <button
+            className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-300 shadow-sm ${
+              category === 'university'
+                ? 'bg-accent text-white shadow-blue-400/50'
+                : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:scale-105'
+            }`}
+            onClick={() => setCategory('university')}
+          >
+            University Package
+          </button>
+
+          <button
+            className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-300 shadow-sm ${
+              category === 'smartAnalytics'
+                ? 'bg-accent text-white shadow-blue-400/50'
+                : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:scale-105'
+            }`}
+            onClick={() => setCategory('smartAnalytics')}
+          >
+            Smart Analytics
+          </button>
         </div>
+
+
+        {/* 4. Products Grid - Wrapped with AnimatePresence */}
+        <AnimatePresence mode="wait">
+          {/* 5. The ul is now a motion component with a key, variants, and exit animation */}
+          <motion.ul
+            key={category} // This tells AnimatePresence to animate when the category changes
+            className="grid grid-cols-1 grid-rows-none gap-8 md:grid-cols-12"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit={{ opacity: 0, transition: { duration: 0.2 } }}
+          >
+            {productData.map((product, index) => (
+              <ProductCard
+                key={index}
+                area={product.area}
+                icon={product.icon}
+                title={product.title}
+                description={product.description}
+              />
+            ))}
+          </motion.ul>
+        </AnimatePresence>
       </div>
     </motion.div>
   );
