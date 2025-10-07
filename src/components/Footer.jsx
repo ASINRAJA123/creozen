@@ -67,10 +67,10 @@ const Footer = () => {
                 Email: <a href="mailto:info@creozen.com" className="hover:text-accent transition-colors">creozen.ai@gmail.com</a>
               </li>
               <li className="text-gray-400">
-                UK: <a href="tel:+442012345678" className="hover:text-accent transition-colors">+44 20 1234 5678</a>
+                UK: <a href="tel:+44 7586183428" className="hover:text-accent transition-colors">+44 20 1234 5678</a>
               </li>
               <li className="text-gray-400">
-                IN: <a href="tel:+916381738184" className="hover:text-accent transition-colors">+91 6381738184</a>
+                IN: <a href="tel:+91 6381738184" className="hover:text-accent transition-colors">+91 6381738184</a>
               </li>
             </ul>
           </div>
