@@ -1,190 +1,92 @@
 import { motion } from "framer-motion";
+import { BarChart3, Brain, Code2, Package, Wifi, Workflow } from "lucide-react";
+import { FaArrowRight, FaCheck } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa";
 
-
-// --- Content Array for Services ---
 const services = [
   {
     title: "Web and App Development",
     description:
-      "Designing and developing responsive websites and mobile applications with seamless user experiences and robust performance.",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M3 12h18M3 6h18M3 18h18"
-        />
-      </svg>
-    ),
+      "We build high-performance, scalable, and secure web and mobile applications tailored to your business needs. Our development process is collaborative and transparent, ensuring the end product not only meets but exceeds your expectations.",
+    points: [
+      "Custom UI/UX Design & Prototyping",
+      "Responsive Web & Mobile Applications",
+      "E-commerce & CMS Solutions",
+      "API Integration & Development",
+      "Ongoing Maintenance & Support",
+    ],
+    icon: <Code2 className="w-8 h-8 text-indigo-600" />,
   },
   {
-    title: "AI-Based Smart Analytics for Event Management",
+    title: "AI-Based Smart Analytics",
     description:
-      "Leveraging AI and machine learning to provide real-time insights, crowd analytics, and predictive event management solutions.",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 17v-6h6v6M12 3v4m6 4h4M2 7h4m6 6h4"
-        />
-      </svg>
-    ),
+      "Unlock the power of your data with our advanced AI analytics solutions to gain actionable insights and predict trends. From real-time monitoring to computer vision, we help you optimize operations and uncover new opportunities.",
+    points: [
+      "Real-Time Data Monitoring & Dashboards",
+      "Predictive Modeling & Forecasting",
+      "Computer Vision for Inspection & Monitoring",
+      "Natural Language Processing (NLP)",
+      "Custom Machine Learning Model Development",
+    ],
+    icon: <BarChart3 className="w-8 h-8 text-indigo-600" />,
   },
   {
     title: "Custom Product Development",
     description:
-      "Building tailored AI, software, and IoT products to meet specific business goals, from ideation to deployment.",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-        />
-      </svg>
-    ),
+      "From idea to launch, we are your dedicated partner in building bespoke AI, software, and IoT products. Our full-cycle development covers research, design, agile development, and successful deployment.",
+    points: [
+      "Full-Cycle Product Development",
+      "MVP & PoC Creation",
+      "Scalable Cloud Architecture",
+      "IoT Product & Firmware Development",
+      "Go-to-Market Strategy & Support",
+    ],
+    icon: <Package className="w-8 h-8 text-indigo-600" />,
   },
   {
     title: "AI-Based Training",
     description:
-      "Conducting corporate training, workshops, and hands-on sessions focused on AI and machine learning technologies for upskilling teams.",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path d="M12 14l9-5-9-5-9 5 9 5z" />
-        <path d="M12 14l6.16-3.422a12.083 12.083 
-                 0 01.665 6.479A11.952 11.952 0 
-                 0012 20.055a11.952 11.952 0 
-                 00-6.824-2.998 12.078 12.078 
-                 0 01.665-6.479L12 14z" />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 14l9-5-9-5-9 5 9 
-             5zm0 0l6.16-3.422a12.083 
-             12.083 0 01.665 6.479A11.952 
-             11.952 0 0012 20.055a11.952 
-             11.952 0 00-6.824-2.998 
-             12.078 12.078 0 01.665-6.479L12 
-             14zm-4 6v-7.5l4-2.222"
-        />
-      </svg>
-    ),
+      "Empower your team with tailored corporate training programs and hands-on workshops led by industry experts. We ensure your team is equipped to drive innovation from within.",
+    points: [
+      "Customized Corporate Workshops",
+      "Hands-On AI & Machine Learning Sessions",
+      "Executive & Leadership AI Briefings",
+      "Specialized Training in NLP & Computer Vision",
+      "Certification & Skill Assessment",
+    ],
+    icon: <Brain className="w-8 h-8 text-indigo-600" />,
   },
   {
     title: "Enterprise-Level Automations",
     description:
-      "Implementing intelligent automation solutions, including chatbots, workflow optimization, and internal knowledge systems for enterprises.",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-        />
-      </svg>
-    ),
+      "Streamline workflows, reduce costs, and enhance productivity with our intelligent automation solutions. From chatbots to RPA, we build secure and scalable systems that free your team for strategic initiatives.",
+    points: [
+      "Intelligent Chatbot & Voice Assistant Development",
+      "Robotic Process Automation (RPA)",
+      "Automated Workflow Optimization",
+      "Internal Knowledge Management Systems",
+      "AI-Powered Invoice & Document Processing",
+    ],
+    icon: <Workflow className="w-8 h-8 text-indigo-600" />,
   },
   {
     title: "Smart IoT & Connected Solutions",
     description:
-      "Creating connected ecosystems through IoT devices and intelligent systems that integrate seamlessly with web, mobile, and enterprise applications.",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 8c-1.105 0-2 .895-2 2s.895 2 2 2 
-             2-.895 2-2-.895-2-2-2zm0 10c-4.418 
-             0-8-3.582-8-8s3.582-8 8-8 8 3.582 
-             8 8-3.582 8-8 8z"
-        />
-      </svg>
-    ),
+      "We build intelligent, connected ecosystems that bridge the physical and digital worlds for real-time control. Our IoT solutions deliver seamless integration, efficiency, and new user experiences.",
+    points: [
+      "Custom IoT Device & Sensor Development",
+      "Firmware & Embedded Systems Engineering",
+      "IoT Cloud Platform Integration",
+      "Real-Time Data Visualization & Control",
+      "Web & Mobile App Integration",
+    ],
+    icon: <Wifi className="w-8 h-8 text-indigo-600" />,
   },
 ];
 
-// --- Reusable Animated Card Component ---
-const ServiceCard = ({ title, description, icon }) => (
-  <motion.div
-    className="bg-primary p-6 rounded-2xl border border-gray-800 flex flex-col items-start text-left h-full shadow-lg cursor-pointer"
-    variants={{
-      hidden: { opacity: 0, y: 40, scale: 0.9 },
-      visible: {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        transition: { type: "spring", stiffness: 100 },
-      },
-    }}
-    whileHover={{
-      y: -10,
-      scale: 1.05,
-      boxShadow: "0px 12px 30px rgba(128,0,255,0.2)",
-      transition: { type: "spring", stiffness: 300 },
-    }}
-    whileTap={{ scale: 0.97 }}
-  >
-    <div className="text-accent mb-4">{icon}</div>
-    <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-    <p className="text-gray-400 text-sm flex-grow">{description}</p>
-  </motion.div>
-);
-
-// --- Main Page Component ---
+// --- Services Page ---
 const Services = () => {
   const navigate = useNavigate();
-
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: 0.15 },
-    },
-  };
 
   return (
     <motion.div
@@ -194,15 +96,14 @@ const Services = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* --- Glow Effects --- */}
+      {/* Background Glow */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full filter blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-pink-500/20 to-transparent rounded-full filter blur-3xl pointer-events-none"></div>
-      <div className="absolute inset-1/4 w-1/2 h-1/2 rounded-full bg-gradient-to-tr from-purple-500/10 to-pink-500/10 filter blur-xl pointer-events-none"></div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+      <div className="relative max-w-6xl mx-auto px-6">
+        {/* Page Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-20"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
@@ -210,30 +111,57 @@ const Services = () => {
           <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">
             Our Services
           </h1>
-          <p className="mt-4 text-lg text-gray-400">
-            Expert solutions designed to accelerate your business growth.
+          <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
+            Explore our range of innovative solutions designed to accelerate your business growth.
           </p>
         </motion.div>
 
-        {/* Services Grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
+        {/* Services List */}
+        <div className="space-y-24">
           {services.map((service, index) => (
-            <ServiceCard key={index} {...service} />
+            <motion.div
+              key={index}
+              className={`flex flex-col md:flex-row items-start gap-10 ${
+                index % 2 !== 0 ? "md:flex-row-reverse" : ""
+              }`}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.7 }}
+            >
+              {/* Icon */}
+              <div className="flex-shrink-0 text-6xl text-accent">
+                {service.icon}
+              </div>
+
+              {/* Content */}
+              <div>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                  {service.title}
+                </h3>
+                <p className="text-gray-400 text-lg leading-relaxed mb-6 whitespace-pre-line">
+                  {service.description}
+                </p>
+
+                {/* Features */}
+                <ul className="space-y-2 text-gray-300">
+                  {service.points.map((point, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <FaCheck className="text-accent text-sm" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Get a Quote Button */}
-
-        <div className="mt-16 flex justify-center">
+        {/* CTA */}
+        <div className="mt-20 flex justify-center">
           <motion.button
             onClick={() => navigate("/contact")}
-            className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-lg font-medium transition-all duration-300 shadow-sm border-2 border-accent group"
+            className="flex items-center gap-2 rounded-lg px-6 py-3 text-lg font-semibold transition-all duration-300 shadow-sm border-2 border-accent group"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
