@@ -22,7 +22,7 @@ const Forms = () => {
     setStatus("Sending...");
 
     try {
-      const response = await fetch("http://localhost:5000/api/forms", {
+      const response = await fetch("https://form.creozen.co.uk/api/forms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
