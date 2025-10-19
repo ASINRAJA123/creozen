@@ -67,13 +67,13 @@ const Footer = () => {
               <li className="text-gray-400">
                 Email:{' '}
                 <a href="mailto:creozen.ai@gmail.com" className="hover:text-accent transition-colors">
-                  creozen.ai@gmail.com
+                  creozen@creozen.co.uk
                 </a>
               </li>
               <li className="text-gray-400">
                 UK:{' '}
                 <a href="tel:+442012345678" className="hover:text-accent transition-colors">
-                  +44 20 1234 5678
+                  +44 7586 183428
                 </a>
               </li>
               <li className="text-gray-400">
