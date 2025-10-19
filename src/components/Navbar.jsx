@@ -51,18 +51,18 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo Section */}
-          <NavLink to="/" className="flex items-center gap-2 flex-shrink-0 group">
+          {/* Logo Section - MODIFIED */}
+          <NavLink to="/" className="flex items-center gap-1 flex-shrink-0 group">
             <motion.img
               src={Logo}
               alt="Creozen Logo"
-              className="h-8 w-8"
+              className="h-8 w-auto"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
             />
             <span className="text-3xl font-extrabold font-sans bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 group-hover:opacity-80 transition-opacity">
-              Creozen
+              reozen
             </span>
           </NavLink>
 
