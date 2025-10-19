@@ -18,11 +18,13 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
-          {/* Company Info */}
+          {/* Company Info - MODIFIED */}
           <div className="col-span-1 md:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <img src={Logo} alt="Creozen Logo" className="h-8 w-8" />
-              <h3 className="text-2xl font-bold text-white font-sans">Creozen</h3>
+            <div className="flex items-center gap-1 mb-4">
+              <img src={Logo} alt="Creozen Logo" className="h-8 w-auto" />
+              <span className="text-2xl font-bold font-sans bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+                reozen
+              </span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed font-sans">
               Zen-crafted intelligence, delivering innovative AI solutions with simplicity and precision.
