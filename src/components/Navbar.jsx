@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenu, HiX } from 'react-icons/hi';
+import Logo from '../assets/C.svg'; // ✅ path to your uploaded logo
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -40,7 +41,9 @@ const Navbar = () => {
   return (
     <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/70 backdrop-blur-md border-b border-gray-800 shadow-lg' : 'bg-transparent border-b border-transparent'
+        isScrolled
+          ? 'bg-background/70 backdrop-blur-md border-b border-gray-800 shadow-lg'
+          : 'bg-transparent border-b border-transparent'
       }`}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -48,11 +51,19 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <NavLink to="/" className="flex-shrink-0">
-            <h1 className="text-3xl font-extrabold font-sans bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 hover:opacity-80 transition-opacity">
+          {/* Logo Section */}
+          <NavLink to="/" className="flex items-center gap-2 flex-shrink-0 group">
+            <motion.img
+              src={Logo}
+              alt="Creozen Logo"
+              className="h-8 w-8"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+            />
+            <span className="text-3xl font-extrabold font-sans bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 group-hover:opacity-80 transition-opacity">
               Creozen
-            </h1>
+            </span>
           </NavLink>
 
           {/* Desktop Nav */}
@@ -71,7 +82,10 @@ const Navbar = () => {
 
           {/* Mobile Hamburger */}
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-300 hover:text-white focus:outline-none text-2xl">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-gray-300 hover:text-white focus:outline-none text-2xl"
+            >
               {isOpen ? <HiX /> : <HiMenu />}
             </button>
           </div>
@@ -90,7 +104,12 @@ const Navbar = () => {
           >
             <div className="px-4 py-4 space-y-2">
               {navLinks.map((link) => (
-                <NavLink key={link.name} to={link.path} onClick={() => setIsOpen(false)} className={({ isActive }) => linkClasses(isActive, true)}>
+                <NavLink
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) => linkClasses(isActive, true)}
+                >
                   {link.name}
                 </NavLink>
               ))}
