@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import Orb from '../components/Orb';
 import { BrainCircuit, Zap, ShieldCheck, ClipboardCheck, Users } from 'lucide-react';
 
+// --- IMPORT YOUR COMBINED LOGO ---
+// Make sure this path and filename are correct for your project.
+import combinedPartnerLogo from '../assets/nvidia.png'; // ✅ path to your uploaded logo
+
 // --- Page Content ---
 const companyName = "Creozen";
 const mainTagline = "Zen-crafted intelligence – delivering intelligent<br />AI solutions with simplicity and precision.";
@@ -20,7 +24,7 @@ const serviceCards = [
   },
   {
     icon: (
-      <svg className="w-8 h-8 mb-4 text-accent" xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg className="w-8 h-8 mb-4 text-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10m16-10v10M9 3h6m-6 18h6" />
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 12a2 2 0 112 2h-2v-2zM12 10a2 2 0 11-2-2v2h2z"/>
       </svg>
@@ -84,7 +88,9 @@ const Home = () => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       
-      {/* 1. Hero Section (Orb + Name + Tagline + Button) */}
+      {/* (Other sections remain the same) */}
+
+      {/* 1. Hero Section */}
       <section className="relative h-screen flex flex-col items-center justify-center text-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Orb hoverIntensity={0.3} />
@@ -273,6 +279,36 @@ const Home = () => {
           {techStack.map(tech => <span key={tech} className="text-2xl font-bold text-gray-600 mx-12">{tech}</span>)}
         </Marquee>
       </section>
+
+      {/* --- REVISED: Partners Section --- */}
+      <motion.section
+        id="partners"
+        className="py-24 bg-background text-center"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-12">
+            Partnered With
+          </h2>
+          <div className="flex justify-center">
+            {/* The background, border, padding, and shadow have been removed. 
+                Animation is now applied directly to the image. */}
+            <motion.img
+              src={combinedPartnerLogo}
+              alt="Partner Logos"
+              className="max-w-lg w-full h-auto max-h-40 object-contain"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            />
+          </div>
+        </div>
+      </motion.section>
+      {/* --- END: Partners Section --- */}
 
       {/* 7. Call to Action Section */}
       <motion.section 
