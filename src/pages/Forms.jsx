@@ -2,14 +2,14 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Forms = () => {
-  const [activeTab, setActiveTab] = useState("workshop");
   const [formData, setFormData] = useState({
     name: "",
     designation: "",
     otherDesignation: "",
     email: "",
-    phone: "",
-    willing: "",
+    company: "",
+    sampleVideo: "",
+    description: "",
   });
   const [status, setStatus] = useState("");
 
@@ -22,14 +22,12 @@ const Forms = () => {
     setStatus("Sending...");
 
     try {
-      const response = await fetch("https://form.creozen.co.uk/api/forms", {
+      const response = await fetch("http://localhost:5000/api/forms", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          formType: activeTab,
+          formType: "Apply for Demo",
           finalDesignation:
             formData.designation === "Others"
               ? formData.otherDesignation
@@ -46,8 +44,9 @@ const Forms = () => {
           designation: "",
           otherDesignation: "",
           email: "",
-          phone: "",
-          willing: "",
+          company: "",
+          sampleVideo: "",
+          description: "",
         });
       } else {
         setStatus(`❌ ${result.message || "Something went wrong."}`);
@@ -83,282 +82,160 @@ const Forms = () => {
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">
-            Registration Forms
+            Apply for Demo
           </h1>
           <p className="mt-4 text-lg text-gray-400">
-            Choose a category and submit your details below.
+            Submit your details below and we’ll get back to you soon.
           </p>
         </motion.div>
 
-        {/* Tabs */}
-        <div className="flex justify-center mb-10">
-          {["workshop", "lucky"].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 py-2 mx-2 rounded-full font-medium transition-all ${
-                activeTab === tab
-                  ? "bg-accent text-white"
-                  : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-              }`}
-            >
-              {tab === "workshop" ? "Workshop" : "Lucky Draw & Consultancy"}
-            </button>
-          ))}
-        </div>
-
-        {/* Forms */}
+        {/* Form */}
         <div className="bg-primary p-8 rounded-lg border border-gray-800">
           <AnimatePresence mode="wait">
-            {activeTab === "workshop" ? (
-              <motion.form
-                key="workshop"
-                variants={formVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                onSubmit={handleSubmit}
-                className="space-y-6"
-              >
-                {/* Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300">
-                    Name
-                  </label>
-                  <input
+            <motion.form
+              key="demoForm"
+              variants={formVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onSubmit={handleSubmit}
+              className="space-y-6"
+            >
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
+                />
+              </div>
+
+              {/* Designation */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300">
+                  Designation
+                </label>
+                <select
+                  name="designation"
+                  required
+                  value={formData.designation}
+                  onChange={handleChange}
+                  className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
+                >
+                  <option value="">Select</option>
+                  <option value="Student">Student</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Business Owner">Business Owner</option>
+                  <option value="Others">Others</option>
+                </select>
+
+                {formData.designation === "Others" && (
+                  <motion.input
                     type="text"
-                    name="name"
+                    name="otherDesignation"
+                    placeholder="Please specify"
                     required
-                    value={formData.name}
+                    value={formData.otherDesignation}
                     onChange={handleChange}
-                    className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="mt-2 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
                   />
-                </div>
+                )}
+              </div>
 
-                {/* Designation Dropdown */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300">
-                    Designation
-                  </label>
-                  <select
-                    name="designation"
-                    required
-                    value={formData.designation}
-                    onChange={handleChange}
-                    className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
-                  >
-                    <option value="">Select</option>
-                    <option value="Student">Student</option>
-                    <option value="Employee">Employee</option>
-                    <option value="Business Owner">Business Owner</option>
-                    <option value="Others">Others</option>
-                  </select>
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300">
+                  Email ID
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
+                />
+              </div>
 
-                  {formData.designation === "Others" && (
-                    <motion.input
-                      type="text"
-                      name="otherDesignation"
-                      placeholder="Please specify"
-                      required
-                      value={formData.otherDesignation}
-                      onChange={handleChange}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="mt-2 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
-                    />
+              {/* Company */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300">
+                  Company Name
+                </label>
+                <input
+                  type="text"
+                  name="company"
+                  required
+                  value={formData.company}
+                  onChange={handleChange}
+                  className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
+                />
+              </div>
+
+              {/* Sample Video */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300">
+                  Paste your sample video (Google Drive link with all access)
+                </label>
+                <input
+                  type="url"
+                  name="sampleVideo"
+                  required
+                  value={formData.sampleVideo}
+                  onChange={handleChange}
+                  className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
+                />
+              </div>
+
+              {/* Description */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300">
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  required
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows={4}
+                  className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
+                />
+              </div>
+
+              {/* Submit */}
+              <div>
+                <button
+                  type="submit"
+                  className="inline-flex justify-center py-3 px-6 rounded-md text-sm font-medium text-white bg-accent hover:bg-accent-hover transition"
+                >
+                  Submit
+                </button>
+                <div className="mt-4 h-5">
+                  {status && (
+                    <p
+                      className={`text-sm ${
+                        status.includes("success")
+                          ? "text-green-400"
+                          : status.includes("❌") || status.includes("🚨")
+                          ? "text-red-400"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      {status}
+                    </p>
                   )}
                 </div>
-
-                {/* Email */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300">
-                    Email ID
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
-                  />
-                </div>
-
-                {/* Phone */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    required
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
-                  />
-                </div>
-
-                {/* Willing Dropdown */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300">
-                    Are you willing to attend the workshop?
-                  </label>
-                  <select
-                    name="willing"
-                    required
-                    value={formData.willing}
-                    onChange={handleChange}
-                    className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
-                  >
-                    <option value="">Select</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-
-                {/* Submit */}
-                <div>
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center py-3 px-6 rounded-md text-sm font-medium text-white bg-accent hover:bg-accent-hover transition"
-                  >
-                    Submit
-                  </button>
-                  <div className="mt-4 h-5">
-                    {status && (
-                      <p
-                        className={`text-sm ${
-                          status.includes("success")
-                            ? "text-green-400"
-                            : status.includes("❌") || status.includes("🚨")
-                            ? "text-red-400"
-                            : "text-gray-400"
-                        }`}
-                      >
-                        {status}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </motion.form>
-            ) : (
-              // Lucky Draw & Consultancy Form
-              <motion.form
-                key="lucky"
-                variants={formVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                onSubmit={handleSubmit}
-                className="space-y-6"
-              >
-                {/* Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
-                  />
-                </div>
-
-                {/* Designation Dropdown */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300">
-                    Designation
-                  </label>
-                  <select
-                    name="designation"
-                    required
-                    value={formData.designation}
-                    onChange={handleChange}
-                    className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
-                  >
-                    <option value="">Select</option>
-                    <option value="Student">Student</option>
-                    <option value="Employee">Employee</option>
-                    <option value="Business Owner">Business Owner</option>
-                    <option value="Others">Others</option>
-                  </select>
-
-                  {formData.designation === "Others" && (
-                    <motion.input
-                      type="text"
-                      name="otherDesignation"
-                      placeholder="Please specify"
-                      required
-                      value={formData.otherDesignation}
-                      onChange={handleChange}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="mt-2 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
-                    />
-                  )}
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300">
-                    Email ID
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
-                  />
-                </div>
-
-                {/* Phone (Optional) */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300">
-                    Phone Number (Optional)
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="mt-1 block w-full bg-background border-gray-700 rounded-md py-2 px-3 text-white focus:ring-accent focus:border-accent transition"
-                  />
-                </div>
-
-                {/* Submit */}
-                <div>
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center py-3 px-6 rounded-md text-sm font-medium text-white bg-accent hover:bg-accent-hover transition"
-                  >
-                    Submit
-                  </button>
-                  <div className="mt-4 h-5">
-                    {status && (
-                      <p
-                        className={`text-sm ${
-                          status.includes("success")
-                            ? "text-green-400"
-                            : status.includes("❌") || status.includes("🚨")
-                            ? "text-red-400"
-                            : "text-gray-400"
-                        }`}
-                      >
-                        {status}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </motion.form>
-            )}
+              </div>
+            </motion.form>
           </AnimatePresence>
         </div>
       </div>
