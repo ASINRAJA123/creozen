@@ -66,13 +66,13 @@ const Footer = () => {
             <ul className="space-y-2 text-sm font-sans">
               <li className="text-gray-400">
                 Email:{' '}
-                <a href="mailto:creozen.ai@gmail.com" className="hover:text-accent transition-colors">
+                <a href="mailto:creozen@creozen.co.uk" className="hover:text-accent transition-colors">
                   creozen@creozen.co.uk
                 </a>
               </li>
               <li className="text-gray-400">
                 UK:{' '}
-                <a href="tel:+442012345678" className="hover:text-accent transition-colors">
+                <a href="tel:+44 7586 183428" className="hover:text-accent transition-colors">
                   +44 7586 183428
                 </a>
               </li>
